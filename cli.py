@@ -102,6 +102,7 @@ def say(message: str, lang: str) -> None:
 def main():
     assistant_message = gpt_query(USER_PROMPT)
     print(f"[assistant] {assistant_message}")
+    say(assistant_message, "en")
 
     while line := input("[user] ").strip():
         if line == "!recommend":
@@ -112,6 +113,7 @@ def main():
         else:
             response = gpt_query(line)
             print(f"[assistant] {response}")
+            say(response, "en")
 
 
 if __name__ == "__main__":
