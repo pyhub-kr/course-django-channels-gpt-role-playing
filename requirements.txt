@@ -1,0 +1,26 @@
+# coding: utf-8
+
+# 장고 웹프레임워크
+django==4.2.1
+
+# 파이썬에서 보다 손쉬운 환경변수 처리
+python-dotenv==1.0.0
+
+# 장고 내에서 보다 손쉬운 환경변수 처리 (python-dotenv에 더해, 장고 친화적인 기능 지원)
+django-environ==0.10.0
+
+# openai api 사용을 위한 라이브러리
+openai==0.27.7
+
+# 장고 내에서 보다 손쉬운 bootstrap5 사용을 위한 라이브러리
+django-bootstrap5==23.1
+
+# HTTP 요청 및 HTML 파서 라이브러리
+requests
+beautifulsoup4
+
+# 장고 채널스 라이브러리
+channels[daphne]~=4.0.0
+
+# 구글번역 크롤링을 통한 음성 생성 라이브러리
+gTTS==2.3.2
