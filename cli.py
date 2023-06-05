@@ -40,13 +40,20 @@ USER_PROMPT = (
     f"Now, start a conversation with the first sentence!"
 )
 
+RECOMMEND_PROMPT = (
+    f"Can you please provide me an {level_word} example "
+    f"of how to respond to the last sentence "
+    f"in this situation, without providing a translation "
+    f"and any introductory phrases or sentences."
+)
+
 
 messages = [
     {"role": "system", "content": SYSTEM_PROMPT},
 ]
 
 
-def gpt_query(user_query: str) -> str:
+def gpt_query(user_query: str, skip_save: bool = False) -> str:
     "유저 메세지에 대한 응답을 반환합니다."
 
     global messages
@@ -62,10 +69,11 @@ def gpt_query(user_query: str) -> str:
     )
     assistant_message = response["choices"][0]["message"]["content"]
 
-    messages.append({
-        "role": "assistant",
-        "content": assistant_message,
-    })
+    if skip_save is False:
+        messages.append({
+            "role": "assistant",
+            "content": assistant_message,
+        })
 
     return assistant_message
 
@@ -96,7 +104,10 @@ def main():
     print(f"[assistant] {assistant_message}")
 
     while line := input("[user] ").strip():
-        if line == "!say":
+        if line == "!recommend":
+            recommended_message = gpt_query(RECOMMEND_PROMPT, skip_save=True)
+            print("추천 표현: ", recommended_message)
+        elif line == "!say":
             say(messages[-1]["content"], "en")
         else:
             response = gpt_query(line)
