@@ -1,0 +1,46 @@
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>장고 채널스와 함께 ChatGPT 영어 상황극 채팅 서비스 만들기</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        {% block extra-css %}{% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="/"
+                   class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <span class="fs-4">장고 채널스와 함께 ChatGPT 영어 상황극 채팅 서비스 만들기</span>
+                </a>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">새 상황 만들기</a>
+                    </li>
+                </ul>
+            </header>
+        </div>
+        <div class="container">
+            {% bootstrap_messages %}
+
+            {% block content %}{% endblock %}
+
+            <footer class="pt-4 my-md-5 pt-md-5 border-top">
+                <div class="row">
+                    <div class="col-12 col-md">
+                        <small class="d-block mb-3 text-muted">&copy; 2023. 파이썬 사랑방</small>
+                    </div>
+                </div>
+            </footer>
+
+            {% block script %}{% endblock %}
+        </div>
+    </body>
+</html>
