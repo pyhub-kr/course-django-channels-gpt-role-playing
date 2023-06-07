@@ -1,0 +1,66 @@
+{% extends "chat/base.html" %}
+
+{% block extra-css %}
+<style>
+    #chat-message-list {
+        padding: 0;
+        list-style: none;
+    }
+    .chat-message .message {
+        background-color: #3b3b3d;
+        color: #e1e1e1;
+        border-radius: 0.8em;
+        padding: 0.4em;
+        margin: 0.4em 0;
+        display: inline-block;
+        white-space: pre-wrap;
+    }
+
+    .chat-message.me {
+        text-align: right;
+    }
+    .chat-message.me .message {
+        background-color: #1f8cff;
+        color: #fff;
+        text-align: left;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    [{{ roleplayingroom.get_language_display }}
+                    {{ roleplayingroom.get_level_display }}]
+                    {{ roleplayingroom.situation }}
+                    ({{ roleplayingroom.gpt_role }}와 {{ roleplayingroom.my_role }}의 대화)
+                </div>
+                <div class="card-body">
+                    <ul id="chat-message-list">
+{# FIXME: 샘플 채팅 메세지 #}
+<li class="chat-message"><span class="message">Good morning, welcome to Starbucks! What can I get for you today?
+                         </span></li>
+<li class="chat-message me"><span class="message">Yes, I would like a grande Americano with an extra shot of expresso
+                                                  and a splash of almond milk, please.</span></li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex gap-2">
+                        <form id="message-form" class="d-flex gap-1 flex-grow-1">
+                            <input type="text"
+                                   name="message"
+                                   placeholder="메시지를 입력하세요."
+                                   class="form-control flex-grow-1" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="my-3">
+        <a href="{% url 'role_playing_room_edit' roleplayingroom.pk %}"
+           class="btn btn-primary">수정</a>
+    </div>
+{% endblock %}

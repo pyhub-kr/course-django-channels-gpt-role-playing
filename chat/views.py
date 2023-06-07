@@ -1,7 +1,7 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView, ListView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView
 from .models import RolePlayingRoom
 from .forms import RolePlayingRoomForm
 
@@ -17,6 +17,19 @@ class RolePlayingRoomListView(ListView):
 
 
 role_playing_room_list = RolePlayingRoomListView.as_view()
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class RolePlayingRoomDetailView(DetailView):
+    model = RolePlayingRoom
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(user=self.request.user)
+        return qs
+
+
+role_playing_room_detail = RolePlayingRoomDetailView.as_view()
 
 
 @method_decorator(staff_member_required, name="dispatch")
