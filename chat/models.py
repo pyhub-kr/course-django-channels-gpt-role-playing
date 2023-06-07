@@ -12,7 +12,7 @@ class RolePlayingRoom(models.Model):
         GERMAN = "de-DE", "German"
         RUSSIAN = "ru-RU", "Russian"
 
-    class Level(models.TextChoices):
+    class Level(models.IntegerChoices):
         BEGINNER = 1, "초급"
         ADVANCED = 2, "고급"
 

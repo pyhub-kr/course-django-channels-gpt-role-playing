@@ -1,0 +1,12 @@
+{% extends "chat/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" />
+</form>
+
+{% endblock %}
