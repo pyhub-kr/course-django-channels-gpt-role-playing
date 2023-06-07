@@ -80,8 +80,17 @@ ws.onerror = function(e) { console.error("장고 채널스 서버와의 웹소�
 
 ws.onmessage = function(e) {
   console.group("[onmessage]");
-  console.log(typeof e.data);
-  console.log(e.data);
+
+  const message_obj = JSON.parse(e.data);
+
+  if ( message_obj.type === "assistant-message" ) {
+    const { message } = message_obj;
+    console.log("assistant-message :", message);
+  }
+  else {
+    console.error("알 수 없는 메시지 타입입니다.", message_obj);
+  }
+
   console.groupEnd();
 };
 
