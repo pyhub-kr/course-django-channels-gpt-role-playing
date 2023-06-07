@@ -38,13 +38,7 @@
                     ({{ roleplayingroom.gpt_role }}와 {{ roleplayingroom.my_role }}의 대화)
                 </div>
                 <div class="card-body">
-                    <ul id="chat-message-list">
-{# FIXME: 샘플 채팅 메세지 #}
-<li class="chat-message"><span class="message">Good morning, welcome to Starbucks! What can I get for you today?
-                         </span></li>
-<li class="chat-message me"><span class="message">Yes, I would like a grande Americano with an extra shot of expresso
-                                                  and a splash of almond milk, please.</span></li>
-                    </ul>
+                    <ul id="chat-message-list"></ul>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex gap-2">
@@ -71,6 +65,15 @@
 {{ roleplayingroom.pk|json_script:"room-pk" }}
 
 <script>
+function addMessage(message, isMe) {
+    const messageList = document.getElementById("chat-message-list");
+    const messageElement = document.createElement("li");
+    messageElement.className = "chat-message" + (isMe ? " me" : "");
+    messageElement.innerHTML = `<span class="message">${message}</span>`;
+    messageList.appendChild(messageElement);
+    messageList.scrollTop = messageList.scrollHeight;
+}
+
 const room_pk = document.querySelector("#room-pk").textContent;
 const ws = new WebSocket(`ws://${window.location.host}/ws/chat/${room_pk}/`);
 
@@ -86,6 +89,7 @@ ws.onmessage = function(e) {
   if ( message_obj.type === "assistant-message" ) {
     const { message } = message_obj;
     console.log("assistant-message :", message);
+    addMessage(message, false);
   }
   else {
     console.error("알 수 없는 메시지 타입입니다.", message_obj);
