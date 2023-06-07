@@ -5,7 +5,9 @@
     <div class="card border-dark">
         <form action="" method="post" novalidate>
             {% csrf_token %}
-            <div class="card-header">상황 만들기</div>
+            <div class="card-header">
+                상황 {% if form.instance.pk %}수정하기{% else %}만들기{% endif %}
+            </div>
             <div class="card-body">{% bootstrap_form form layout="horizontal" %}</div>
             <div class="card-footer text-end">
                 <input type="submit" value="저장하기" class="btn btn-primary" />
