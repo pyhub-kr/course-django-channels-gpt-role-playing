@@ -11,4 +11,5 @@ urlpatterns = [
         views.role_playing_room_delete,
         name="role_playing_room_delete",
     ),
+    path("voice/", views.make_voice, name="make_voice"),
 ]
