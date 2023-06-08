@@ -24,6 +24,13 @@
         color: #fff;
         text-align: left;
     }
+    .chat-message .say {
+        display: block;
+        font-size: .8em;
+        margin-top: -0.4em;
+        margin-left: 0.2em;
+        cursor: pointer;
+    }
 </style>
 {% endblock %}
 
@@ -68,13 +75,37 @@
 {{ roleplayingroom.language|json_script:"room-language" }}
 
 <script>
+function sayMessage(message) {
+  const voiceListSelect = document.querySelector("#voice-list");
+  const voiceName = voiceListSelect.options[voiceListSelect.selectedIndex].value;
+  const voice = window.speechSynthesis.getVoices()
+    .find(voice => voice.name === voiceName);
+
+  const utterance = new SpeechSynthesisUtterance(message);
+  utterance.voice = voice;
+  utterance.lang = voice.lang;
+
+  utterance.addEventListener("error", (e) => {
+    alert(`error: ${e.error}`);
+  });
+
+  window.speechSynthesis.speak(utterance);
+}
+
 function addMessage(message, isMe) {
     const messageList = document.getElementById("chat-message-list");
     const messageElement = document.createElement("li");
     messageElement.className = "chat-message" + (isMe ? " me" : "");
-    messageElement.innerHTML = `<span class="message">${message}</span>`;
+    messageElement.innerHTML = `
+        <span class="message">${message}</span>
+        <span class="say">읽어주기</span>
+    `;
     messageList.appendChild(messageElement);
     messageList.scrollTop = messageList.scrollHeight;
+
+    messageElement.querySelector(".say").addEventListener("click", () => {
+      sayMessage(message);
+    });
 }
 
 const room_pk = document.querySelector("#room-pk").textContent;
