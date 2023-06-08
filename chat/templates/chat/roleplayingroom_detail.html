@@ -48,6 +48,11 @@
                     <ul id="chat-message-list"></ul>
                 </div>
                 <div class="card-footer">
+                    <div class="d-grid gap-2 mb-2">
+                        <button id="auto-play-button" class="btn btn-primary">
+                            자동 읽기 시작
+                        </button>
+                    </div>
                     <select id="voice-list" class="form-select mb-2"></select>
                     <div class="d-flex gap-2">
                         <button class="btn btn-secondary" id="recommend-button">추천받기</button>
@@ -108,6 +113,7 @@ function addMessage(message, isMe) {
     });
 }
 
+let is_auto_play = false;
 const room_pk = document.querySelector("#room-pk").textContent;
 const room_language = JSON.parse(document.querySelector("#room-language").textContent);
 const ws = new WebSocket(`ws://${window.location.host}/ws/chat/${room_pk}/`);
@@ -125,7 +131,9 @@ ws.onmessage = function(e) {
     const { message } = message_obj;
     console.log("assistant-message :", message);
     addMessage(message, false);
-    // sayMessage(message); // not-allowed 오류 발생
+    if ( is_auto_play ) {
+      sayMessage(message);
+    }
   }
   else if ( message_obj.type === "recommended-message" ) {
     const { message } = message_obj;
@@ -170,6 +178,12 @@ window.speechSynthesis.onvoiceschanged = function() {
     }
   });
 };
+
+const autoPlayButton = document.querySelector("#auto-play-button");
+autoPlayButton.addEventListener("click", () => {
+  is_auto_play = true;
+  autoPlayButton.remove();
+});
 </script>
 
 {% endblock %}
