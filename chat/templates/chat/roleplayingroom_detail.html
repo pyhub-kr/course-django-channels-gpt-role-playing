@@ -103,7 +103,8 @@ messageForm.onsubmit = function(e) {
   e.preventDefault();
   const message = e.target.message.value.trim();
   if(message.length > 0) {
-    ws.send(JSON.stringify({ message: message }));
+    addMessage(message, true);
+    ws.send(JSON.stringify({ type: "user-message", message: message }));
     e.target.reset();
   }
 };

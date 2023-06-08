@@ -30,9 +30,22 @@ class RolePlayingRoomConsumer(JsonWebsocketConsumer):
                 }
             )
 
-    def receive_json(self, content, **kwargs):
-        # Echo
-        self.send_json(content)
+    def receive_json(self, content_dict, **kwargs):
+        if content_dict["type"] == "user-message":
+            assistant_message = self.get_query(user_query=content_dict["message"])
+            self.send_json(
+                {
+                    "type": "assistant-message",
+                    "message": assistant_message,
+                }
+            )
+        else:
+            self.send_json(
+                {
+                    "type": "error",
+                    "message": f"Invalid type: {content_dict['type']}",
+                }
+            )
 
     def get_room(self) -> RolePlayingRoom | None:
         user: AbstractUser = self.scope["user"]
