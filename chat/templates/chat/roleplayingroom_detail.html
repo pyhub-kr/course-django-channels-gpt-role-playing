@@ -125,6 +125,7 @@ ws.onmessage = function(e) {
     const { message } = message_obj;
     console.log("assistant-message :", message);
     addMessage(message, false);
+    // sayMessage(message); // not-allowed 오류 발생
   }
   else if ( message_obj.type === "recommended-message" ) {
     const { message } = message_obj;
