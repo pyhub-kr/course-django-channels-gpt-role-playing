@@ -5,10 +5,11 @@ import openai
 from dotenv import load_dotenv
 load_dotenv()
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# OpenAI 클래스 내부에서 OPENAI_API_KEY 환경변수를 참조합니다.
+client = openai.OpenAI()  # api_key=os.getenv("OPENAI_API_KEY"))
 
 
-response = openai.ChatCompletion.create(
+response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
         {"role": "system", "content": "당신은 영어 학습을 도와주는 챗봇입니다."},
@@ -19,4 +20,4 @@ response = openai.ChatCompletion.create(
 print(response)
 
 # 응답 메세지만 출력하기
-print(response["choices"][0]["message"]["content"])
+print(response.choices[0].message.content)

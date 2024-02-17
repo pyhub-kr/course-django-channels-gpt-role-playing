@@ -1,11 +1,14 @@
-from pprint import pprint
 from typing import List
 
 import openai
 from channels.generic.websocket import JsonWebsocketConsumer
 from django.contrib.auth.models import AbstractUser
+from openai.types.chat import ChatCompletion
 
 from chat.models import RolePlayingRoom, GptMessage
+
+
+OPENAI_CLIENT = openai.OpenAI()
 
 
 class RolePlayingRoomConsumer(JsonWebsocketConsumer):
@@ -78,13 +81,13 @@ class RolePlayingRoomConsumer(JsonWebsocketConsumer):
         elif user_query is not None:
             self.gpt_messages.append(GptMessage(role="user", content=user_query))
 
-        response_dict = openai.ChatCompletion.create(
+        response: ChatCompletion = OPENAI_CLIENT.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=self.gpt_messages,
+            messages=self.gpt_messages,  # noqa
             temperature=1,
         )
-        response_role = response_dict["choices"][0]["message"]["role"]
-        response_content = response_dict["choices"][0]["message"]["content"]
+        response_role = response.choices[0].message.role
+        response_content = response.choices[0].message.content
 
         if command_query is None:
             gpt_message = GptMessage(role=response_role, content=response_content)

@@ -1,14 +1,18 @@
 import sys
 import openai
 
-openai.api_key = ""  # your API key
+API_KEY = ""  # your API key
 
-if not openai.api_key:
+if not API_KEY:
     print("OPENAI API KEY를 지정해주세요.", file=sys.stderr)
     sys.exit(1)
 
-response = openai.Completion.create(
-    engine="text-davinci-003",
+
+client = openai.OpenAI(api_key=API_KEY)
+
+
+response = client.completions.create(
+    model="gpt-3.5-turbo-instruct",
     prompt="""
 Fix grammar errors:
 - I is a boy
@@ -16,11 +20,10 @@ Fix grammar errors:
 )
 
 print(response)
-
 print(response.choices[0].text.strip())
 
 
-response = openai.ChatCompletion.create(
+response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
         {"role": "system", "content": "당신은 지식이 풍부한 도우미입니다."},
@@ -29,4 +32,4 @@ response = openai.ChatCompletion.create(
 )
 
 print(response)
-print(response["choices"][0]["message"]["content"])
+print(response.choices[0].message.content)
